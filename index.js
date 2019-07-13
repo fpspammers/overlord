@@ -7,16 +7,17 @@ client.once('ready', () => {
 })
 
 client.on('message', message => {
-    //console.log(message.content)
+    console.log(message.content);
+    message.channel.send(message.content);
 
     if(message.content.startsWith('${prefix}kick')) {
-        //message.channel.send("kick")
+        message.channel.send("kick");
 
-        let member = message.mentions.members.first();
-        member.kick().then((member) => {
-            message.channel.send("kick" + member.displayName + "has been kicked!")
+        //let member = message.mentions.members.first();
+        //member.kick().then((member) => {
+        //    message.channel.send("kick" + member.displayName + "has been kicked!")
 
-        })
+        //})
     }
 })
 
