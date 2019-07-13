@@ -7,17 +7,22 @@ client.once('ready', () => {
 })
 
 client.on('message', message => {
-    //console.log(message.content);
-    //message.channel.send(message.content);
 
-    if(message.content.startsWith('!kick')) {
-        //message.channel.send("kick");
+    if(message.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])){
 
-        let member = message.mentions.members.first();
-        member.kick().then((member) => {
-            message.channel.send(":wave: " + member.displayName + "has been kicked!")
+        //console.log(message.content);
+        //message.channel.send(message.content);
 
-        })
+        if(message.content.startsWith('!kick')) {
+            //message.channel.send("kick");
+
+            let member = message.mentions.members.first();
+            member.kick().then((member) => {
+                message.channel.send(":wave: " + member.displayName + "has been kicked!")
+
+            })
+        }
+
     }
 })
 
