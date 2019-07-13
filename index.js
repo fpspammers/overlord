@@ -3,6 +3,8 @@ const { prefix, token } = require("./config.json");
 const fs = require('fs');
 const client = new Discord.Client();
 var warnedUsers = {};
+var count = 0;  //stores the count of warnings to users.
+const 
 
 //Waits for the client to get ready before initialisation message is displayed
 client.once('ready', () => {
@@ -11,7 +13,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
     var config = require("./config.json");  //includes the json object file in the program.
-    var count = 0;  //stores the count of warnings to users.
+
 
     //If the message does not start with the "!" prefix this block is run.
     if(!message.content.startsWith(prefix)){
@@ -33,6 +35,19 @@ client.on('message', message => {
 
           //Sends the user a message telling them they have been given a warning and for which word.
           client.users.get(message.author.id).send("You have been warned "+warnedUsers[message.author.id]+" times. You utterred this banned word: "+config.bannedWords[i]);
+
+
+
+          //Kicks the user after three warnings.
+          if(warnedUsers[message.author.id]>3){
+            var member = message.guild.members.get(message.author.id);
+            member.kick().then((member) => {
+              message.channel.send(":x: " + member.displayName + " has been exterminated!")
+            });
+          }
+
+          //Deletes the message containing the banned word.
+          message.delete();
           break;
         }
       }
@@ -52,6 +67,7 @@ client.on('message', message => {
 
           //Reads the @mention for which user needs to be kicked.
           let member = message.mentions.members.first();
+          console.log(message.mentions.members.first());
 
           //Kicks the chosen user and sends a message in the chat.
           member.kick().then((member) => {
